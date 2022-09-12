@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import Exception.SemJogadoresException;
+import Exception.SemPerguntasException;
 import dao.QuestaoDao;
 import dao.ResultadoDao;
-import exceptions.SemJogadoresException;
-import exceptions.SemPerguntasException;
 import modelo.Questao;
 import modelo.Resultado;
 import util.JPAUtil;
