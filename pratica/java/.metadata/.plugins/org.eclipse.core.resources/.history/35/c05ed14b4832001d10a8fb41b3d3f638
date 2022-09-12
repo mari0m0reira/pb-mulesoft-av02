@@ -1,0 +1,18 @@
+package br.com.quiz;
+
+public class CadastrarResultado {
+	
+		Resultado resultado = new Resultado();
+		
+		public void cadastrar(){
+			resultado.setJogador("test");
+			resultado.setAcertos(3);
+			resultado.setErros(0);
+		
+		}
+		
+		
+		
+		
+
+}

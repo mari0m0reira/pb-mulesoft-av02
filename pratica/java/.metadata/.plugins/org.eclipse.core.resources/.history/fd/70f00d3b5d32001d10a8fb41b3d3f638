@@ -1,0 +1,19 @@
+package dao;
+
+import javax.persistence.EntityManager;
+
+import modelo.Questao;
+
+public class QuestaoDao {
+	
+	private EntityManager em;
+
+	public QuestaoDao(EntityManager em) {
+		this.em = em;
+	}
+	
+	public void cadastrar(Questao questao) {
+		this.em.persist(questao);
+	}
+	
+}

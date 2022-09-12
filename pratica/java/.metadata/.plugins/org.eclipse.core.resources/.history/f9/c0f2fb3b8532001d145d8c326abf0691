@@ -1,0 +1,27 @@
+package util;
+
+public class TelaUtil {
+
+	public final static void limparTela()
+	{
+	    try
+	    {
+	        final String os = System.getProperty("os.name");
+	        if (os.contains("Windows"))
+	        	
+	        {
+	        	new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+	            //Runtime.getRuntime().exec("cls");
+	        }
+	        else
+	        {
+	            Runtime.getRuntime().exec("clear");
+	        }
+	    }
+	    catch (final Exception e)
+	    {
+	    	System.out.println();
+	        System.out.println("||Erro ao limpar a tela!!||");
+	    }
+	}
+}

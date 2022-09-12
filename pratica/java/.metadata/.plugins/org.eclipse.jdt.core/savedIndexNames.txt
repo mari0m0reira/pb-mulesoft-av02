@@ -1,0 +1,24 @@
+INDEX VERSION 1.131+C:\Users\Usuario\Documents\Compass\pb-mulesoft-av02\pratica\java\.metadata\.plugins\org.eclipse.jdt.core
+3853635836.index
+1630609932.index
+368884638.index
+1958075938.index
+3916247067.index
+4145331170.index
+164273342.index
+3920663842.index
+417809443.index
+4041530356.index
+1894116619.index
+2671987580.index
+4040339482.index
+3048441835.index
+2507714884.index
+3779058863.index
+4273152730.index
+2862484609.index
+3197628505.index
+3518561392.index
+865244896.index
+1745127356.index
+4174264651.index

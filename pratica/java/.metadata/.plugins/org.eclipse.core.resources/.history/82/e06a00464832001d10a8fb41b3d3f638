@@ -1,0 +1,21 @@
+package dao;
+
+import javax.persistence.EntityManager;
+
+import br.com.quiz.Questao;
+import br.com.quiz.Resultado;
+
+public class ResultadoDao {
+	
+
+	private EntityManager em;
+
+	public ResultadoDao(EntityManager em) {
+		this.em = em;
+	}
+	
+	public void salvar(Resultado resultado) {
+		this.em.persist(resultado);
+	}
+
+}

@@ -1,0 +1,11 @@
+package Exception;
+
+public class SemJogadoresException extends RuntimeException{
+	
+	
+	SemJogadoresException(String msg){
+		super(msg);
+	}
+	
+
+}

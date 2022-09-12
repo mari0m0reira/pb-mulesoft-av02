@@ -1,0 +1,96 @@
+package br.com.quiz;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import dao.QuestaoDao;
+import dao.ResultadoDao;
+import modelo.Questao;
+import modelo.Resultado;
+import util.JPAUtil;
+import util.TelaUtil;
+import java.util.Scanner;
+
+public class MenuPrincipal {
+
+	public static void main(String[] args) {
+		
+		int escolha = 3;
+		int escolhaNumero;
+		Boolean verdadeiroOuFalso = false;
+		int acertou = 0;
+		int errou = 0;
+		String nome;
+		Scanner leitura = new Scanner(System.in);
+		Resultado resultado;
+		EntityManager em = JPAUtil.getEntityManager();
+		ResultadoDao resultadoDao = new ResultadoDao(em);
+		QuestaoDao questaoDao = new QuestaoDao(em);
+		
+
+			
+		while(escolha != 0 ) {
+			System.out.println("1 - Jogar novamente \n2 - Ver placar \n0 - Sair");
+			escolha = leitura.nextInt();
+			leitura.nextLine();
+			if(escolha != 0 && escolha != 1 && escolha != 2) {
+				System.out.println("\n||Escolha incorreta||\n\n");
+			}else {
+				if(escolha == 1) {
+					errou = 0;
+					acertou = 0;
+					resultado = new Resultado();
+					System.out.println("Digite o nome do jogador: ");
+					nome = leitura.nextLine(); 
+					resultado.setJogador(nome);
+					List<Questao> todasQuestoes = questaoDao.buscarTodos();
+					
+					for(Questao pergunta : todasQuestoes) {
+						if(pergunta.isAtiva()) {
+							System.out.println(pergunta.getPergunta());
+							System.out.println("1 - Verdadeiro\t 2 - Falso ?");
+							escolhaNumero = leitura.nextInt();
+							if(escolhaNumero == 1) {
+								verdadeiroOuFalso = true;
+							}else if(escolhaNumero == 2){
+								verdadeiroOuFalso = false;
+							}
+							if(verdadeiroOuFalso.equals(pergunta.isVerdadeira())) {
+								acertou++;
+								System.out.println("-------------------------");
+								System.out.println("Parabens, você acertou!!");
+								System.out.println("-------------------------\n");
+							}else{
+								errou++;
+								System.out.println("-------------------------");
+								System.out.println("Infelizmente você errou!!");
+								System.out.println("-------------------------\n");
+							}
+						}
+					}
+					System.out.println("Chegou aqui");
+					em.getTransaction().begin();					
+					resultado.setAcertos(acertou);
+					resultado.setErros(errou);
+					resultadoDao.salvar(resultado);
+					em.getTransaction().commit();				
+					
+					System.out.println("Chegou aqui");
+					
+				}else if(escolha == 2) {
+					List<Resultado> todosJogadores = resultadoDao.buscarTodos();
+					if(todosJogadores == null)
+						System.out.println("teste");
+					System.out.println("PLACAR");
+					todosJogadores.forEach(r -> System.out.println("JOGADOR: " + r.getJogador() + "\t    ACERTOS: " + r.getAcertos() + "\tDATA: " + r.getDataDaPartida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+					System.out.println("\n");
+				}
+			}
+		}
+		em.close();				
+			
+		
+	}
+}

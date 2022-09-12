@@ -1,0 +1,111 @@
+package br.com.quiz;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import dao.QuestaoDao;
+import dao.ResultadoDao;
+import modelo.Questao;
+import modelo.Resultado;
+import util.JPAUtil;
+import util.TelaUtil;
+import java.util.Scanner;
+
+public class MenuPrincipal {
+
+	public static void main(String[] args) {
+		
+		int escolha = 3;
+		int escolhaNumero;
+		Boolean verdadeiroOuFalso = false;
+		int acertou = 0;
+		int errou = 0;
+		String nome;
+		Scanner leitura = new Scanner(System.in);
+		Resultado resultado = new Resultado();
+		EntityManager em = JPAUtil.getEntityManager();
+		ResultadoDao resultadoDao = new ResultadoDao(em);
+		QuestaoDao questaoDao = new QuestaoDao(em);
+		
+
+		em.getTransaction().begin();	
+		while(escolha != 0 ) {
+			System.out.println("1 - Jogar novamente \n2 - Ver placar \n0 - Sair");
+			escolha = leitura.nextInt();
+			leitura.nextLine();
+			if(escolha != 0 && escolha != 1 && escolha != 2) {
+				System.out.println("\n||Escolha incorreta||\n\n");
+			}else {
+				if(escolha == 1) {
+					em = JPAUtil.getEntityManager();
+					System.out.println("Digite o nome do jogador: ");
+					nome = leitura.nextLine(); 
+					resultado.setJogador(nome);
+					List<Questao> todasQuestoes = questaoDao.buscarTodos();
+					for(Questao pergunta : todasQuestoes) {
+						if(pergunta.isAtiva()) {
+							System.out.println(pergunta.getPergunta());
+							System.out.println("1 - Verdadeiro\t 2 - Falso");
+							escolhaNumero = leitura.nextInt();
+							if(escolhaNumero == 1) {
+								verdadeiroOuFalso = true;
+							}else if(escolhaNumero == 2){
+								verdadeiroOuFalso = false;
+							}
+							if(verdadeiroOuFalso.equals(pergunta.isVerdadeira())) {
+								acertou++;
+								System.out.println("Parabens, você acertou!!");
+								System.out.println("-------------------------\n");
+							}else if(verdadeiroOuFalso.equals(pergunta.isVerdadeira())){
+								errou++;
+								System.out.println("Infelizmente você errou!!");
+								System.out.println("-------------------------\n");
+							}
+						}
+					}
+					resultado.setAcertos(acertou);
+					resultado.setErros(errou);
+					resultadoDao.salvar(resultado);
+					em.getTransaction().commit();				
+					
+					
+					
+				}else if(escolha == 2) {
+					List<Resultado> todosJogadores = resultadoDao.buscarTodos();
+					System.out.println("PLACAR");
+					todosJogadores.forEach(r -> System.out.println("JOGADOR: " + r.getJogador() + "\t    ACERTOS: " + r.getAcertos() + "\tDATA: " + r.getDataDaPartida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+					System.out.println("\n");
+				}
+			}
+		}
+		em.close();	
+			
+			/*
+		//EntityManager em = JPAUtil.getEntityManager();
+		Resultado resultado = new Resultado();
+		resultado.setJogador("test3");
+		resultado.setAcertos(10);
+		resultado.setErros(4);
+
+		em.getTransaction().begin();
+
+		ResultadoDao resultadoDao = new ResultadoDao(em);
+
+		em.getTransaction().begin();
+		resultadoDao.salvar(resultado);
+		em.getTransaction().commit();
+		
+		
+		//TelaUtil.limparTela();
+		//r.getDataDaPartida()
+		//new SimpleDateFormat("dd/MM/yyy").format(r.getDataDaPartida());
+		List<Resultado> todos = resultadoDao.buscarTodos();
+		todos.forEach(r -> System.out.println("JOGADOR: " + r.getJogador() + "\tACERTOS: " + r.getAcertos() + "\tDATA: " + r.getDataDaPartida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+		//todos.forEach(r -> System.out.println(r.getJogador()));
+		em.close();		
+		
+	}
+		*/
+}}

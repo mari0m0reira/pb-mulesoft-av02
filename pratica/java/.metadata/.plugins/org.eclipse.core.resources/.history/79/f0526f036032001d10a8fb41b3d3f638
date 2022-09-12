@@ -1,0 +1,20 @@
+package dao;
+
+import javax.persistence.EntityManager;
+
+import modelo.Resultado;
+
+public class ResultadoDao {
+	
+
+	private EntityManager em;
+
+	public ResultadoDao(EntityManager em) {
+		this.em = em;
+	}
+	
+	public void salvar(Resultado resultado) {
+		this.em.persist(resultado);
+	}
+
+}

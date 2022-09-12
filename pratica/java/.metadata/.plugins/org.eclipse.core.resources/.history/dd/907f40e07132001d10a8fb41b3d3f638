@@ -1,0 +1,25 @@
+package dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import modelo.Questao;
+
+public class QuestaoDao {
+	
+	private EntityManager em;
+
+	public QuestaoDao(EntityManager em) {
+		this.em = em;
+	}
+	
+	public void salvar(Questao questao) {
+		this.em.persist(questao);
+	}
+	
+	public List<Questao> buscarTodos(){
+		String jpql = "SELECT q FROM Questao";
+		return em.createQuery(jpql, Questao.class).getResultList();
+	}
+}

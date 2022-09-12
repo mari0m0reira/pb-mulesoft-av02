@@ -1,0 +1,9 @@
+package util;
+
+import javax.persistence.EntityManagerFactory;
+
+public class JPAUtil {
+	
+	private static final EntityManagerFactory FACTORY =
+
+}
